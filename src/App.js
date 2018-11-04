@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import Header from './Header'
+import TodoList from './TodoList'
+import AddTodo from './AddTodo'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+function App() {
+  const initialList = [
+    {text: 'Do a React app with hooks', done: true},
+    {text: 'Add more To Do-items', done: false}
+  ]
+
+  const [list, changeList] = useState(initialList)
+
+  const addToList = (newItem) => {
+    changeList([...list, {text: newItem, done: false}])
   }
+
+  const changeItemStatus = (itemText) => {
+    changeList(list.map(item => item.text !== itemText ? item : {text: item.text, done: !item.done}))
+  }
+
+  return (
+    <div className='inbox'>
+      <Header />
+      <TodoList list={list} handler={changeItemStatus} />
+      <AddTodo add={addToList}/>
+    </div>
+  )
 }
 
-export default App;
+export default App
